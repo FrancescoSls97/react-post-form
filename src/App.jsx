@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 function App() {
   //costanti per le funzioni
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
-  const [message, setMessage] = useState ('')
+  const [body, setBody] = useState ('')
   
 
   //API
@@ -13,25 +13,25 @@ function App() {
 //fetch function
 function handleSubmit(e) {
   e.preventDefault()
-
+  
   const requestOptions = {
     method: 'POST',
-    header: {
-      'Connect-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      author: author,
-      title: title,
-      message: message,
-    })
-  };
-    fetch(url, requestOptions)
-    .then (response => response.json())
-    .then (data => {
-      console.log('Hey!! Listen!!');
-      console.log(data);     
-    })   
+    headers: {
+      'Content-Type' : 'application/json'
+  },
+  body: JSON.stringify({
+    author: author,
+    title: title,
+    body: body
+  })
 };
+fetch(url, requestOptions)
+.then(response => response.json())
+.then(data => {
+  console.log('HEY!! LISTEN!!');
+  console.log(data);  
+});
+}
 
 //funzione per settare il nome dell'autore
   function handleAuthorName(e) {
@@ -46,9 +46,9 @@ function handleSubmit(e) {
   }
 
   //funzione per settare il testo del post
-  function handleMessage(e) {
+  function handleBody(e) {
     console.log(e.target.name);
-    setMessage(e.target.value) 
+    setBody(e.target.value) 
   }
 
 
@@ -56,7 +56,7 @@ function handleSubmit(e) {
   return (
     <>
     <div className="container m-5">
-      <form action={handleSubmit}>
+      <form onSubmit={handleSubmit}>
 
       <div className="card m-3 p-3">
         <h1>Send Something To Boolean</h1>
@@ -88,7 +88,7 @@ function handleSubmit(e) {
           </div>
           <div className="mb-3">
             <label forhtml="message" className="form-label fs-4">Your message</label>
-            <textarea className="form-control p-3" name="message" id="message" rows="3" placeholder='Write your message here' value={message} onChange={handleMessage}></textarea>
+            <textarea className="form-control p-3" name="body" id="message" rows="3" placeholder='Write your message here' value={body} onChange={handleBody}></textarea>
           </div>
           <div className="form-check mb-2">
             <input className="form-check-input" type="checkbox" name="send" id="send" />
